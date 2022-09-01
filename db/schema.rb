@@ -10,14 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_31_155410) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_01_153721) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "greetings", force: :cascade do |t|
-    t.string "greeting"
+  create_table "courses", id: :string, force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "grades", force: :cascade do |t|
+    t.integer "q1"
+    t.integer "q2"
+    t.integer "q3"
+    t.integer "q4"
+    t.string "rq1"
+    t.string "rq2"
+    t.string "rq3"
+    t.string "rq4"
+    t.string "rf"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "student_id"
+    t.string "course_id"
+    t.index ["course_id"], name: "index_grades_on_course_id"
+    t.index ["student_id"], name: "index_grades_on_student_id"
+  end
+
+  create_table "students", id: :string, force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "grades", "courses"
+  add_foreign_key "grades", "students"
 end

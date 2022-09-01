@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id_student: 1
+  id_material: 1
+  q1: 1
+  q2: 1
+  q3: 1
+  q4: 1
+  rq1: MyString
+  rq2: MyString
+  rq3: MyString
+  rq4: MyString
+  rf: MyString
+
+two:
+  id_student: 1
+  id_material: 1
+  q1: 1
+  q2: 1
+  q3: 1
+  q4: 1
+  rq1: MyString
+  rq2: MyString
+  rq3: MyString
+  rq4: MyString
+  rf: MyString
