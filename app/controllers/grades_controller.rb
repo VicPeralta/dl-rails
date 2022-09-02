@@ -12,7 +12,7 @@ class GradesController < ApplicationController
     if grade
       render json: grade, status: 200
     else
-      render json: '{error:Not found}', status: 422
+    render json: '{error:Not found}', status: 422
     end
   end
 
@@ -24,7 +24,7 @@ class GradesController < ApplicationController
     if grade.valid?
 
       grade.save
-      render json: 'ok', status: 201
+      render json: grade, status: 201
     else
       render json: grade.errors, status: 422
     end
@@ -34,6 +34,16 @@ class GradesController < ApplicationController
     grade = Grade.find_by(id: params[:id])
     if grade
       grade.update!(grade_params)
+      render json: grade, status: 200
+    else
+      render json: '{error:Not found}', status: 422
+    end
+  end
+
+  def destroy
+    grade = Grade.find_by(id: params[:id])
+    if grade
+      grade.destroy
       render json: '{status:ok}', status: 200
     else
       render json: '{error:Not found}', status: 422
