@@ -15,5 +15,6 @@ class CreateGrades < ActiveRecord::Migration[7.0]
     end
     add_reference(:grades, :student, foreign_key: true, type: :string)
     add_reference(:grades, :course, foreign_key: true, type: :string)
+    add_index(:grades, [:student_id, :course_id], unique:true)
   end
 end

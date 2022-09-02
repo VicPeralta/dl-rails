@@ -35,6 +35,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_01_153721) do
     t.string "student_id"
     t.string "course_id"
     t.index ["course_id"], name: "index_grades_on_course_id"
+    t.index ["student_id", "course_id"], name: "index_grades_on_student_id_and_course_id", unique: true
     t.index ["student_id"], name: "index_grades_on_student_id"
   end
 
