@@ -12,7 +12,7 @@ class GradesController < ApplicationController
     if grade
       render json: grade, status: 200
     else
-    render json: '{error:Not found}', status: 422
+      render json: '{error:Not found}', status: 422
     end
   end
 
@@ -51,7 +51,7 @@ class GradesController < ApplicationController
   end
 
   def by_student
-    grades = Grade.where(student_id: params[:student_id])
+    grades = Grade.joins(:course).select('grades.*, courses.name').where(student_id: params[:student_id]).order(:course_id)
     render json: grades, status: 200
   end
 
