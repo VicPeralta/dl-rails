@@ -26,9 +26,9 @@ class Grade < ApplicationRecord
   def grade_final(quarter1, quarter2, quarter3, quarter4)
     return 'pending' if quarter1.nil? || quarter2.nil? || quarter3.nil? || quarter4.nil?
 
-    media =  (quarter1 + quarter2 + quarter3 + quarter4) /4
+    media = (quarter1 + quarter2 + quarter3 + quarter4) / 4
     return 'failed' if media < 6
-    
+
     'passed'
   end
 end
