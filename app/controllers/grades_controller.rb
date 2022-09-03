@@ -59,7 +59,10 @@ class GradesController < ApplicationController
   end
 
   def by_course
-    grades = Grade.where(course_id: params[:course_id])
+    grades = Grade.joins(:student)
+      .select('grades.*, students.name')
+      .where(course_id: params[:course_id])
+      .order(:student_id)
     render json: grades, status: 200
   end
 
