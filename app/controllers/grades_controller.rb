@@ -1,11 +1,17 @@
 class GradesController < ApplicationController
   protect_from_forgery with: :null_session
   def index
+    @user = user_validation
+    return unless @user
+
     grades = Grade.all.order(:student_id)
     render json: grades, status: 200
   end
 
   def show
+    @user = user_validation
+    return unless @user
+
     grade = Grade.find_by(id: params[:id])
     if grade
       render json: grade, status: 200
@@ -16,6 +22,9 @@ class GradesController < ApplicationController
 
   # Enroll role
   def create
+    @user = user_validation
+    return unless @user
+
     grade = Grade.new
     grade.student_id = params[:student_id]
     grade.course_id = params[:course_id]
@@ -28,6 +37,9 @@ class GradesController < ApplicationController
   end
 
   def update
+    @user = user_validation
+    return unless @user
+
     grade = Grade.find_by(id: params[:id])
     if grade
       grade.update!(grade_params)
@@ -38,6 +50,9 @@ class GradesController < ApplicationController
   end
 
   def destroy
+    @user = user_validation
+    return unless @user
+
     grade = Grade.find_by(id: params[:id])
     if grade
       grade.destroy
@@ -48,6 +63,9 @@ class GradesController < ApplicationController
   end
 
   def by_student
+    @user = user_validation
+    return unless @user
+
     grades = Grade.joins(:course)
       .select('grades.*, courses.name')
       .where(student_id: params[:student_id])
@@ -56,6 +74,9 @@ class GradesController < ApplicationController
   end
 
   def by_course
+    @user = user_validation
+    return unless @user
+
     grades = Grade.joins(:student)
       .select('grades.*, students.name')
       .where(course_id: params[:course_id])
@@ -64,6 +85,15 @@ class GradesController < ApplicationController
   end
 
   private
+
+  def user_validation
+    user, error, status = UsersHelper::Validator.valid_user_token?(request.headers['Authorization'])
+    unless user
+      render json: { 'error:': error }, status: status
+      return
+    end
+    user
+  end
 
   def grade_params
     params.require(:grade).permit(:id, :q1, :q2, :q3, :q4)

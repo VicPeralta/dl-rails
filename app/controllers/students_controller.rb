@@ -1,11 +1,17 @@
 class StudentsController < ApplicationController
   protect_from_forgery with: :null_session
   def index
+    @user = user_validation
+    return unless @user
+
     students = Student.all.order(:id)
     render json: students, status: 200
   end
 
   def show
+    @user = user_validation
+    return unless @user
+
     student = Student.find_by(id: params[:id])
     if student
       render json: student, code: 200
@@ -15,6 +21,9 @@ class StudentsController < ApplicationController
   end
 
   def create
+    @user = user_validation
+    return unless @user
+
     student = Student.new
     student.name = params[:name]
     student.id = params[:id]
@@ -27,6 +36,9 @@ class StudentsController < ApplicationController
   end
 
   def update
+    @user = user_validation
+    return unless @user
+
     student = Student.find_by(id: params[:id])
     if student
       student.update!(student_params)
@@ -37,6 +49,9 @@ class StudentsController < ApplicationController
   end
 
   def destroy
+    @user = user_validation
+    return unless @user
+
     student = Student.find_by(id: params[:id])
     if student
       student.destroy
@@ -47,6 +62,15 @@ class StudentsController < ApplicationController
   end
 
   private
+
+  def user_validation
+    user, error, status = UsersHelper::Validator.valid_user_token?(request.headers['Authorization'])
+    unless user
+      render json: { 'error:': error }, status: status
+      return
+    end
+    user
+  end
 
   def student_params
     params.require(:student).permit(:id, :name)
