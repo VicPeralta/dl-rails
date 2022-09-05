@@ -1,10 +1,8 @@
 class StudentsController < ApplicationController
   protect_from_forgery with: :null_session
   def index
-    @students = Student.all
-    respond_to do |format|
-      format.json { render json: @students }
-    end
+    students = Student.all.order(:id)
+    render json: students, status: 200
   end
 
   def show

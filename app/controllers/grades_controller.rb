@@ -1,10 +1,8 @@
 class GradesController < ApplicationController
   protect_from_forgery with: :null_session
   def index
-    grades = Grade.all
-    respond_to do |format|
-      format.json { render json: grades }
-    end
+    grades = Grade.all.order(:student_id)
+    render json: grades, status: 200
   end
 
   def show
@@ -22,7 +20,6 @@ class GradesController < ApplicationController
     grade.student_id = params[:student_id]
     grade.course_id = params[:course_id]
     if grade.valid?
-
       grade.save
       render json: grade, status: 201
     else

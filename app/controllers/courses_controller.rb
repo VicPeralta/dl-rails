@@ -1,8 +1,8 @@
 class CoursesController < ApplicationController
   protect_from_forgery with: :null_session
   def index
-    course = Course.all
-    render json: course
+    course = Course.all.order(:id)
+    render json: course, status: 200
   end
 
   def show
